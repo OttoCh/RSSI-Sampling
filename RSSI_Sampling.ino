@@ -185,19 +185,32 @@ void publish_RSSI() {
     else if(j==7) {
       topic_pub = RSSI_AP8;
     }
-      char msg[100];
-      for(int i=0; i<totalSample; i++) {
-        char buf[10];
-        sprintf(buf, "%d\t", all_RSSI[j][i]);
-        strcat(msg, buf);
-      }
-      if(!client.publish(topic_pub, msg)) {
-          err += 1;
-          tft.setTextColor(ST7735_RED);
-          tft.print(j);
-          tft.print(" Fail to upload\n");
-          printf("%d %d fail to upload\n", j);
-      }
+	//make check if this array is actually empty thing
+	int totalzero = 0;
+	bool doUpload = true;
+	for(int i=0; i<totalSample; i++) {
+		if(all_RSSI[j][i]==0) {
+			totalzero += 1;
+		}
+	}
+	if(totalzero == totalSample) {
+		doUpload = false;
+	}
+      	if(doUpload) {
+		char msg[100];
+	      	for(int i=0; i<totalSample; i++) {
+			char buf[10];
+			sprintf(buf, "%d\t", all_RSSI[j][i]);
+			strcat(msg, buf);
+	      	}
+	      	if(!client.publish(topic_pub, msg)) {
+			err += 1;
+			tft.setTextColor(ST7735_RED);
+			tft.print(j);
+			tft.print(" Fail to upload\n");
+			printf("%d %d fail to upload\n", j);
+	      }
+	}
   }
   if(err==0) {
     tft.setTextColor(ST7735_GREEN);
