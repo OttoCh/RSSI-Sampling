@@ -11,7 +11,7 @@
 
 const char* ssid = "Lambda";
 const char* password = "langsung";
-const char* broker_MQTT = "23.92.65.163";
+const char* broker_MQTT = "elka.fi.itb.ac.id";
 
 const char* RSSI_AP1 = "otto/RSSI/AP1";
 const char* RSSI_AP2 = "otto/RSSI/AP2";
